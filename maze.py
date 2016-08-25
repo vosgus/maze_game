@@ -37,16 +37,15 @@ def legalMove(direction, maze, human_position):
 def canPush(direction, maze, human_position):
     human_x, human_y = human_position[0], human_position[1]
     
-    print(maze[human_x][human_y + 1] + " " + maze[human_x][human_y + 2])
-    
+    # todo list index goes out of ronge, needs to check
     if direction == 'w':
-        return (maze[human_x - 1][human_y] == '#' and maze[human_x - 2][human_y] != '#')
+        return (maze[human_x - 1][human_y] == '#' and maze[human_x - 2][human_y] != '#' and human_x - 2 > 0)
     if direction == 'a':
-        return (maze[human_x][human_y - 1] == '#' and maze[human_x][human_y - 2] != '#')
+        return (maze[human_x][human_y - 1] == '#' and maze[human_x][human_y - 2] != '#' and human_y - 2 > 0)
     if direction == 's':
-        return (maze[human_x + 1][human_y] == '#' and maze[human_x + 2][human_y] != '#')
+        return (maze[human_x + 1][human_y] == '#' and maze[human_x + 2][human_y] != '#' and human_x + 2 < 23) 
     if direction == 'd':
-        return (maze[human_x][human_y + 1] == '#' and maze[human_x][human_y + 2] != '#')
+        return (maze[human_x][human_y + 1] == '#' and maze[human_x][human_y + 2] != '#' and human_y + 2 < 74)
         
 def drawMaze(maze, width, height):
     for x in range(height):
