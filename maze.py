@@ -122,11 +122,15 @@ def randomDirection():
         
 def randomPosition():
     return [random.randint(1, 21), random.randint(1, 72)] 
+
+def checkWin(maze, human_position, goalPosition):
+    return human_position == goalPosition
     
 def clearScreen():
     clear = lambda: os.system('cls')
     clear()
-    
+
+goalPosition = [22, 2]    
 width, height = 74, 23    
 maze = getMaze(width, height, "maze_ascii.txt");
 human = '&'
@@ -156,7 +160,9 @@ while (True):
     moveTrolls(maze, trolls)
     addEntities(maze, '@', trolls)
         
-        
+    if (checkWin(maze, human_position, goalPosition)):
+        print("You made it to the end!!")
+        break
   
 
        
