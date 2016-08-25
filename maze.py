@@ -1,5 +1,6 @@
 import time
 import os
+import random
 
 # Reads in maze from text file and returns it
 def getMaze(width, height, fileName):
@@ -83,7 +84,28 @@ def clearBlock(maze, x, y):
 
 def addToBlock(maze, entity, x, y):
     maze[x][y] = entity
+   
+# Generates a list of n trolls
+def generateTrolls(n, maze):
+    trolls = [[0 for x in range(0, n)] for x in range(0, n)]
+    
+    for i in range(0, n):
+        position = randomPosition()
+        while not validSpawn(maze, position[0], position[1]):
+            position = randomPosition()
+        trolls[i] = position
+    return trolls
+
+def validSpawn(maze, x, y):
+    return (maze[x][y] != '#')
+    
+def addTrolls(maze, trolls):
+    for i in range(0, len(trolls)):
+        addToBlock(maze, '@', trolls[i][0], trolls[i][1])
         
+def randomPosition():
+    return [random.randint(1, 21), random.randint(1, 72)] 
+    
 def clearScreen():
     clear = lambda: os.system('cls')
     clear()
@@ -94,6 +116,8 @@ human = '&'
 human_position = [0, 0]
 human_position[0], human_position[1] = 1, 1
 maze[human_position[0]][human_position[1]] = human
+trolls = generateTrolls(2, maze)
+addTrolls(maze, trolls)
 
 while (True):
     # First we draw the maze
