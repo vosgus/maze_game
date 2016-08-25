@@ -78,12 +78,19 @@ def push(maze, direction, human_position):
     if direction == 'd':
         clearBlock(maze, human_x, human_y + 1)
         addToBlock(maze, '#', human_x, human_y + 2)
+
+def clearEntitities(maze, entities):
+    for entity in entities:
+        clearBlock(maze, entity[0], entity[1])
         
 def clearBlock(maze, x, y):
     maze[x][y] = ' '
 
-def addToBlock(maze, entity, x, y):
-    maze[x][y] = entity
+def addToBlock(maze, figure, x, y):
+    maze[x][y] = figure
+    
+def addEntity(maze, figure, entityPosition):
+    maze[entityPosition[0]][entityPosition[1]] = figure
    
 # Generates a list of n trolls
 def generateTrolls(n, maze):
@@ -99,9 +106,19 @@ def generateTrolls(n, maze):
 def validSpawn(maze, x, y):
     return (maze[x][y] != '#')
     
-def addTrolls(maze, trolls):
-    for i in range(0, len(trolls)):
-        addToBlock(maze, '@', trolls[i][0], trolls[i][1])
+def addEntities(maze, figure, entities):
+    for entity in entities:
+        addEntity(maze, figure, entity)
+        
+def moveTrolls(maze, trolls):
+    for troll in trolls:
+        direction = randomDirection()
+        while not legalMove(direction, maze, troll):
+            direction = randomDirection()
+        move(direction, troll)
+
+def randomDirection():
+    return "wasd"[random.randint(0, 3)]
         
 def randomPosition():
     return [random.randint(1, 21), random.randint(1, 72)] 
@@ -116,8 +133,8 @@ human = '&'
 human_position = [0, 0]
 human_position[0], human_position[1] = 1, 1
 maze[human_position[0]][human_position[1]] = human
-trolls = generateTrolls(2, maze)
-addTrolls(maze, trolls)
+trolls = generateTrolls(10, maze)
+addEntities(maze, '@', trolls)
 
 while (True):
     # First we draw the maze
@@ -130,10 +147,14 @@ while (True):
     if (action in "wasd" and legalMove(action, maze, human_position)):
         clearBlock(maze, human_position[0], human_position[1])
         move(action, human_position)
-        addToBlock(maze, human, human_position[0], human_position[1])        
+        addEntity(maze, human, human_position)        
     elif (action in "wasd" and canPush(action, maze, human_position)):
         print("canpush")
         push(maze, action, human_position)
+        
+    clearEntitities(maze, trolls)
+    moveTrolls(maze, trolls)
+    addEntities(maze, '@', trolls)
         
         
   
