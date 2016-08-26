@@ -7,6 +7,12 @@ class Vertex:
     def addAdjacent(self, vertex):
         if vertex not in self.adjacent:
             self.adjacent.append(vertex)
+            
+    def isAdjacent(self, vertex):
+        return (vertex in self.adjacent)
+            
+    def removeAdjacent(self, vertex):
+        self.adjacent.remove(vertex)
         
     def getAdjacencyList(self):
         return self.adjacent
