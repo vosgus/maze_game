@@ -1,6 +1,7 @@
 import time
 import os
 import random
+import maze_generator
 
 # Reads in maze from text file and returns it
 def getMaze(width, height, fileName):
@@ -129,42 +130,46 @@ def checkWin(maze, human_position, goalPosition):
 def clearScreen():
     clear = lambda: os.system('cls')
     clear()
-
-goalPosition = [22, 2]    
-width, height = 74, 23    
-maze = getMaze(width, height, "maze_ascii.txt");
-human = '&'
-human_position = [0, 0]
-human_position[0], human_position[1] = 1, 1
-maze[human_position[0]][human_position[1]] = human
-trolls = generateTrolls(10, maze)
-addEntities(maze, '@', trolls)
-
-while (True):
-    # First we draw the maze
-    clearScreen()
-    drawMaze(maze, width, height);
-    
-    # Get player to move
-    action = getAction()
-    
-    if (action in "wasd" and legalMove(action, maze, human_position)):
-        clearBlock(maze, human_position[0], human_position[1])
-        move(action, human_position)
-        addEntity(maze, human, human_position)        
-    elif (action in "wasd" and canPush(action, maze, human_position)):
-        print("canpush")
-        push(maze, action, human_position)
-        
-    clearEntitities(maze, trolls)
-    moveTrolls(maze, trolls)
-    addEntities(maze, '@', trolls)
-        
-    if (checkWin(maze, human_position, goalPosition)):
-        print("You made it to the end!!")
-        break
   
+def run():
+    goalPosition = [22, 2]    
+    width, height = 74, 23    
+    maze = getMaze(width, height, "maze_ascii.txt");
+    human = '&'
+    human_position = [0, 0]
+    human_position[0], human_position[1] = 1, 1
+    maze[human_position[0]][human_position[1]] = human
+    trolls = generateTrolls(10, maze)
+    addEntities(maze, '@', trolls)
 
-       
+    while (True):
+        # First we draw the maze
+        clearScreen()
+        drawMaze(maze, width, height);
+        
+        # Get player to move
+        action = getAction()
+        
+        if (action in "wasd" and legalMove(action, maze, human_position)):
+            clearBlock(maze, human_position[0], human_position[1])
+            move(action, human_position)
+            addEntity(maze, human, human_position)        
+        elif (action in "wasd" and canPush(action, maze, human_position)):
+            print("canpush")
+            push(maze, action, human_position)
+            
+        clearEntitities(maze, trolls)
+        moveTrolls(maze, trolls)
+        addEntities(maze, '@', trolls)
+            
+        if (checkWin(maze, human_position, goalPosition)):
+            print("You made it to the end!!")
+            break
+    
+def testMazeGenerator():
+    mazeGraph = maze_generator.generateFullMaze(6, 6)
+    maze_generator.printMaze(mazeGraph, 6, 6)
 
+testMazeGenerator()
+    
     

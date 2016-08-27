@@ -1,4 +1,4 @@
-from vertex import Vertex
+from . import vertex
 
 class Edge:
     
