@@ -29,4 +29,14 @@ class Graph:
         
     def getAdjacecyList(self, vertex):
         return vertex.getAdjacencyList()
+        
+    def printAdjacencyList(self):
+        out = ""
+        for vertex in self.vertices:
+            out += str(vertex.data) + " -> [ "
+            for adjVertex in vertex.getAdjacencyList():
+                out += str(adjVertex.data) + " "
+            out += "]\n"
+            print(out, end="")
+            out = ""
     

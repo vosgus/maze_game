@@ -12,7 +12,8 @@ class Vertex:
         return (vertex in self.adjacent)
             
     def removeAdjacent(self, vertex):
-        self.adjacent.remove(vertex)
+        if vertex in self.adjacent:
+            self.adjacent.remove(vertex)
         
     def getAdjacencyList(self):
         return self.adjacent

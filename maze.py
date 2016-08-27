@@ -167,8 +167,9 @@ def run():
             break
     
 def testMazeGenerator():
-    mazeGraph = maze_generator.generateFullMaze(6, 6)
-    maze_generator.printMaze(mazeGraph, 6, 6)
+    w, h = 70, 25
+    mazeGraph = maze_generator.generateFullMaze(w, h)
+    maze_generator.binaryMaze(mazeGraph, w, h)
 
 testMazeGenerator()
     
