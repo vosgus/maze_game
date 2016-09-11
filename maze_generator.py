@@ -17,18 +17,20 @@ def printMaze(graph, width, height):
             # Cell top and bottom walls
             if vertex_1D < width * height:
                 if col + 1 == width: # Corner case for the last wall piece
-                    middle += "#"
+                    middle += "-"
                 elif graph.adjacent(graph.getVertex(vertex_1D), graph.getVertex(vertex_1D + 1)):
-                    middle += "##"
+                    middle += "--"
                 elif col == 0:
-                    middle += "# "
+                    middle += "- "
                 else:
                     middle += "  "
                 
             # Cell side walls, skip last row
             if vertex_1D < (width * height) - width:
-                if graph.adjacent(graph.getVertex(vertex_1D), graph.getVertex(vertex_1D + width)) or col == 0:
-                    up += "# "
+                if graph.adjacent(graph.getVertex(vertex_1D), graph.getVertex(vertex_1D + width)):
+                    up += "| "
+                elif col + 1 == width: # Corner case for last wall piece
+                    up += "|" 
                 else:
                     up += "  "
                 
@@ -41,14 +43,15 @@ def printMaze(graph, width, height):
 # Binary Tree algorithm for generating a maze
 # Returns a random maze given som bias.
 def binaryMaze(graph, width, height):
-    for row in range(1, height - 1):
-        for col in range(1, width - 1):
+    for row in range(1, height):
+        for col in range(1, width):
             # formula for 2D -> 1D, width * row + col
             vertex_1D = width * row + col
             if random.randint(0, 1) == 1:    
-                graph.removeEdge(graph.getVertex(vertex_1D), graph.getVertex(vertex_1D + width))
+                graph.removeEdge(graph.getVertex(vertex_1D), graph.getVertex(vertex_1D - width))
             else:
-                graph.removeEdge(graph.getVertex(vertex_1D), graph.getVertex(vertex_1D - 1))
+                if row < height - 1: # Skip last row
+                    graph.removeEdge(graph.getVertex(vertex_1D), graph.getVertex(vertex_1D - 1))
     printMaze(graph, width, height)
     
 # Returns a graph of a fully connected maze of size width * height    
